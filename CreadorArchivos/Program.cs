@@ -150,7 +150,7 @@ namespace CreadorArchivos
 
             CreateFile($"{baseName}.service.ts", baseName, moduloName, "Service", orden);
 
-            CreateFile($"{baseName}-models.ts", baseName, moduloName, "Models.ts", orden);
+            CreateFile($"{baseName}.models.ts", baseName, moduloName, "Models.ts", orden);
 
             // Crear archivo de instrucciones adicionales
             string instructionsFilePath = Path.Combine(directoryPath, "Instrucciones.txt");
@@ -290,19 +290,19 @@ namespace CreadorArchivos
                     if(orden == "")
                     {
                         return $@"using PgxAPI.DataBaseTier;
-using PgxAPI.Models;
+using PgxAPI.Models.ERROR;
 
 namespace PgxAPI.BusinessLogic
 {{
     public class {baseName}BL
     {{
         private readonly IConfiguration? _config;
-        {baseName}DB {baseFormat}Db;
+        {baseName}DB {baseFormat}DB;
 
         public {baseName}BL(IConfiguration config)
         {{
             _config = config;
-            {baseFormat}Db = new {baseName}DB(_config);
+            {baseFormat}DB = new {baseName}DB(_config);
         }}
     }}
 }}";
@@ -310,7 +310,7 @@ namespace PgxAPI.BusinessLogic
                     else
                     {
                         return $@"using PgxAPI.DataBaseTier;
-using PgxAPI.Models;
+using PgxAPI.Models.ERROR;
 using PgxAPI.Models{orden};
 
 namespace PgxAPI.BusinessLogic
@@ -318,12 +318,12 @@ namespace PgxAPI.BusinessLogic
     public class {baseName}BL
     {{
         private readonly IConfiguration? _config;
-        {baseName}DB {baseFormat}Db;
+        {baseName}DB {baseFormat}DB;
 
         public {baseName}BL(IConfiguration config)
         {{
             _config = config;
-            {baseFormat}Db = new {baseName}DB(_config);
+            {baseFormat}DB = new {baseName}DB(_config);
         }}
     }}
 }}";
@@ -332,8 +332,8 @@ namespace PgxAPI.BusinessLogic
 
                     if(orden == "")
                     {
-                        return $@"using PgxAPI.Models;
-using System.Data.SqlClient;
+                        return $@"using PgxAPI.Models.ERROR;
+using Microsoft.Data.SqlClient;
 using System.Data;
 using Dapper;
 
@@ -352,9 +352,9 @@ namespace PgxAPI.DataBaseTier
                     }
                     else
                     {
-                        return $@"using PgxAPI.Models;
+                        return $@"using PgxAPI.Models.ERROR;
 using PgxAPI.Models{orden};
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data;
 using Dapper;
 
@@ -377,7 +377,7 @@ namespace PgxAPI.DataBaseTier
                     {
                         return $@"using Microsoft.AspNetCore.Mvc;
 using PgxAPI.BusinessLogic;
-using PgxAPI.Models;
+using PgxAPI.Models.ERROR;
 
 namespace PgxAPI.Controllers
 {{
@@ -386,7 +386,7 @@ namespace PgxAPI.Controllers
     public class {baseName}Controller : Controller
     {{
         private readonly IConfiguration? _config;
-         {baseName}BL {baseFormat}BL;
+            {baseName}BL {baseFormat}BL;
         public {baseName}Controller(IConfiguration config)
         {{
             _config = config;
@@ -399,7 +399,7 @@ namespace PgxAPI.Controllers
                     {
                         return $@"using Microsoft.AspNetCore.Mvc;
 using PgxAPI.BusinessLogic;
-using PgxAPI.Models;
+using PgxAPI.Models.ERROR;
 using PgxAPI.Models{orden};
 
 namespace PgxAPI.Controllers
@@ -409,7 +409,7 @@ namespace PgxAPI.Controllers
     public class {baseName}Controller : Controller
     {{
         private readonly IConfiguration? _config;
-         {baseName}BL {baseFormat}BL;
+            {baseName}BL {baseFormat}BL;
         public {baseName}Controller(IConfiguration config)
         {{
             _config = config;
@@ -417,111 +417,148 @@ namespace PgxAPI.Controllers
         }}
     }}
 }}";
-                    }                
+                                                    }                
                 case "ComponentTs":
                     if(moduleName != "")
                     {
                         return $@"
-import {{ Component, OnInit, OnDestroy }} from '@angular/core';
-import {{ Router }} from '@angular/router';
-import {{ ConfirmationService, MessageService }} from 'primeng/api';
-import {{ Subject }} from 'rxjs';
-import {{ UsuarioLogeadoDTO }} from '../../../models/logon.model';
-import {{ {baseName}Service }} from '../../../services/{moduleName}/{baseName}.service';
+    import {{ Component, OnInit, OnDestroy }} from '@angular/core';
+    import {{ Router }} from '@angular/router';
+    import {{ ConfirmationService, MessageService }} from 'primeng/api';
+    import {{ Subject }} from 'rxjs';
+    import {{ UsuarioLogeadoDTO }} from '../../../models/logon.model';
+    import {{ {baseName}Service }} from '../../../services/{moduleName}/{baseName}.service';
+    import {{ MenuService }} from 'src/app/backend/services/menu.service';
 
-@Component({{
-    selector: 'app-{baseName}',
-    templateUrl: './{baseName}.component.html',
-    providers: [ConfirmationService, MessageService],
-}})
+    @Component({{
+        selector: 'app-{baseName}',
+        templateUrl: './{baseName}.component.html',
+        providers: [ConfirmationService, MessageService],
+    }})
 
-export class {baseName} implements OnInit, OnDestroy {{
+    export class {baseName} implements OnInit, OnDestroy {{
 
-    public _unsubscribeAll!: Subject<any>;
-    public UsuarioSesion: UsuarioLogeadoDTO = new UsuarioLogeadoDTO();
+        public _unsubscribeAll!: Subject<any>;
+        public UsuarioSesion: UsuarioLogeadoDTO = new UsuarioLogeadoDTO();
+        manualID: string = null;
 
-    constructor(private router: Router,
-        private _{baseName}Srv: {baseName}Service,
-        private messageService: MessageService) {{
-        this._unsubscribeAll = new Subject();
-    }}
-
-    ngOnDestroy(): void {{
-        this._unsubscribeAll.unsubscribe();
-    }}
-
-    ngOnInit(): void {{
-        if (sessionStorage.getItem('UsuarioInfo') != null) {{
-            this.UsuarioSesion = JSON.parse(sessionStorage.getItem('UsuarioInfo')!);
+        constructor(private router: Router,
+            private _{baseName}Srv: {baseName}Service,
+            private messageService: MessageService,
+            private _Server: MenuService) {{
+            this._unsubscribeAll = new Subject();
         }}
-        else {{
-            this.router.navigate(['auth/login']);
-        }}
-    }}
 
-}}";
+        ngOnDestroy(): void {{
+            this._unsubscribeAll.unsubscribe();
+        }}
+
+        ngOnInit(): void {{
+            if (sessionStorage.getItem('UsuarioInfo') != null) {{
+                this.UsuarioSesion = JSON.parse(sessionStorage.getItem('UsuarioInfo')!);
+            }}
+            else {{
+                this.router.navigate(['auth/login']);
+            }}
+        }}
+
+        abrirManual(): void {{
+            if(this.manualID == null){{
+                this.manualID = this._Server._keyFormulario.value;
+            }}
+            window.open(this.manualID, '_blank');
+        }}
+
+    }}";
                     }
                     else
                     {
                         return $@"
-import {{ Component, OnInit, OnDestroy }} from '@angular/core';
-import {{ Router }} from '@angular/router';
-import {{ ConfirmationService, MessageService }} from 'primeng/api';
-import {{ Subject }} from 'rxjs';
-import {{ UtilitiesService }} from 'src/app/backend/services/utilities.service';
-import {{ UsuarioLogeadoDTO }} from '../../models/logon.model';
-import {{ {baseName}Service }} from '../../services/{baseName}.service';
+    import {{ Component, OnInit, OnDestroy }} from '@angular/core';
+    import {{ Router }} from '@angular/router';
+    import {{ ConfirmationService, MessageService }} from 'primeng/api';
+    import {{ Subject }} from 'rxjs';
+    import {{ UtilitiesService }} from 'src/app/backend/services/utilities.service';
+    import {{ UsuarioLogeadoDTO }} from '../../models/logon.model';
+    import {{ {baseName}Service }} from '../../services/{baseName}.service';
+    import {{ MenuService }} from 'src/app/backend/services/menu.service';
 
-@Component({{
-    selector: 'app-{baseName}',
-    templateUrl: './{baseName}.component.html',
-    providers: [ConfirmationService, MessageService],
-}})
+    @Component({{
+        selector: 'app-{baseName}',
+        templateUrl: './{baseName}.component.html',
+        providers: [ConfirmationService, MessageService],
+    }})
 
-export class {baseName} implements OnInit, OnDestroy {{
+    export class {baseName} implements OnInit, OnDestroy {{
 
-    public _unsubscribeAll!: Subject<any>;
-    public UsuarioSesion: UsuarioLogeadoDTO = new UsuarioLogeadoDTO();
+        public _unsubscribeAll!: Subject<any>;
+        public UsuarioSesion: UsuarioLogeadoDTO = new UsuarioLogeadoDTO();
+        manualID: string = null;
 
-    constructor(private router: Router,
-        private _{baseName}Srv: {baseName}Service,
-        private messageService: MessageService) {{
-        this._unsubscribeAll = new Subject();
-    }}
-
-    ngOnDestroy(): void {{
-        this._unsubscribeAll.unsubscribe();
-    }}
-
-    ngOnInit(): void {{
-        if (sessionStorage.getItem('UsuarioInfo') != null) {{
-            this.UsuarioSesion = JSON.parse(sessionStorage.getItem('UsuarioInfo')!);
+        constructor(private router: Router,
+            private _{baseName}Srv: {baseName}Service,
+            private messageService: MessageService) {{
+            this._unsubscribeAll = new Subject();
         }}
-        else {{
-            this.router.navigate(['auth/login']);
-        }}
-    }}
 
-}}";
+        ngOnDestroy(): void {{
+            this._unsubscribeAll.unsubscribe();
+        }}
+
+        ngOnInit(): void {{
+            if (sessionStorage.getItem('UsuarioInfo') != null) {{
+                this.UsuarioSesion = JSON.parse(sessionStorage.getItem('UsuarioInfo')!);
+            }}
+            else {{
+                this.router.navigate(['auth/login']);
+            }}
+        }}
+
+        abrirManual(): void {{
+            if(this.manualID == null){{
+                this.manualID = this._Server._keyFormulario.value;
+            }}
+            window.open(this.manualID, '_blank');
+        }}
+
+    }}";
                     }   
                 case "ComponentHtml":
                     return $@"<div class=""grid"">
 
-  <p-toast></p-toast>
+<p-toast></p-toast>
 
-  <div class=""col-12"">
+<div class=""col-12"">
 
-      <h5><span class=""fa-solid fa-check-to-slot""></span> frmFSL_Consulta</h5>
+    <h5><span class=""fa-solid fa-check-to-slot""></span> Título de pantalla</h5>
+
+    <div class=""formgroup-inline flex justify-content-between flex-column sm:flex-row "">
+
+    <div class=""flex gap-1 align-items-center justify-content-center"">
+
+        <button pTooltip=""Ayuda"" (click)=""abrirManual()"" pButton pRipple type=""button"" icon=""pi pi-question-circle"" 
+        class=""p-button-raised p-button-rounded p-button-secondary p-button-outlined mr-2 mt-3""></button>
+
+    </div>
+
+    <div class=""flex flex-column gap-2 align-items-center justify-content-center sm:flex-row"">
+        <div class=""flex gap-1 align-items-center justify-content-center"">
+        </div>
+    </div>
+
+    </div>
      
-  </div>
+</div>
 
 </div>";
                 case "Service":
                     return $@"import {{ Injectable }} from '@angular/core';
-import {{ throwError }} from 'rxjs';
+import {{ BehaviorSubject, catchError, Observable }} from 'rxjs';
 import {{ environment }} from 'src/environments/environment';
-import {{ HttpClient, HttpHeaders }} from '@angular/common/http';
-import Swal from 'sweetalert2';
+import {{ HttpClient }} from '@angular/common/http';
+import {{ ErrorHandlerService }} from '../../ErrorHandlerService.service';
+import {{ HeadersService }} from '../../HeadersService.service';
+import {{ Error_DTO,ErrorDTO }} from 'src/app/backend/models/errores.models';
 //import {{  }} from '../models/{baseName}.models';
 
 @Injectable({{providedIn: 'root'
@@ -530,39 +567,26 @@ import Swal from 'sweetalert2';
 export class {baseName}Service {{
 
     private apiUrl = environment.apiUrl + '{baseName}/';
-    constructor(private http: HttpClient) {{ }}
+                                
+    constructor(
+        private http: HttpClient,
+        private errorHandler: ErrorHandlerService,
+        private headersService: HeadersService,
+    ) {{ }}
 
-    private obtenerHeaders(jwtToken: string): HttpHeaders {{
-        return new HttpHeaders({{
-            Authorization: 'Bearer ' + jwtToken,
-            'Content-Type': 'application/json'
-        }});
-    }}
+                               
 
-    handleError(error: any) {{
-        let errorMessage = '';
-        console.log(error);
-        if (error.error instanceof ErrorEvent) {{
-            // Get client-side error
-            errorMessage = error.error.message;
-        }} else {{
-            // Get server-side error
-            errorMessage = `Error Code: ${{error.status}}\nMessage: ${{error.message}}`;
-        }}
-        //window.alert(errorMessage);
-        Swal.fire({{
-            title: ""Error de Servidor"",
-            html: 'Por favor envíe el siguiente mensaje al administrador del sistema: ' + '<b>' + errorMessage + '</b>',
-            icon: ""error"",
-            width: 600,
-            padding: ""3em"",
-            confirmButtonColor: ""#28a745"",
-            confirmButtonText: ""Aceptar"",
-        }});
-        return throwError(errorMessage);
-    }}
+                                
 
-    // AQUI VAN LOS METODOS DEL SERVICIO
+    // AQUI VAN LOS METODOS DEL SERVICIO, Utilizar comentarios como el siguiente en cada método:
+
+        /**
+        * Obtiene una factura por su ID
+        * @param CodEmpresa Código de la empresa seleccionada
+        * @param id         ID de la factura a consultar
+        * @param jwtToken   Token de autorización para la API
+        * @returns  Detalle de factura 
+        */
 
 }}
 ";

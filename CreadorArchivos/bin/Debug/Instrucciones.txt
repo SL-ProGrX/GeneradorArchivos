@@ -1,7 +1,7 @@
 EN INICIO.COMPONENT.TS : 
-import { frmAF_Pruebas } from '../proGrx_Beneficios/frmAF_Pruebas/frmAF_Pruebas.component';
+import { frmTES_Token } from '../proGrx_Bancos/frmTES_Token/frmTES_Token.component';
 
-this.componentRegistry.registerComponent('frmAF_Pruebas', frmAF_Pruebas);
+this.componentRegistry.registerComponent('frmTES_Token', frmTES_Token);
 
 EN INICIO MODULE
-import { frmAF_Pruebas } from '../proGrx_Beneficios/frmAF_Pruebas/frmAF_Pruebas.component';
+import { frmTES_Token } from '../proGrx_Bancos/frmTES_Token/frmTES_Token.component';

@@ -5,3 +5,10 @@ C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorA
 C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.csproj.CoreCompileInputs.cache
 C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.exe
 C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.pdb
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.exe.config
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.exe
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.pdb
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.csproj.AssemblyReference.cache
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.csproj.CoreCompileInputs.cache
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.exe
+C:\MPB System Logic\GitRepos\GeneradorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.pdb
