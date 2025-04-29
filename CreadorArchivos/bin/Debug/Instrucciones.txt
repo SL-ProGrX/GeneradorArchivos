@@ -1,0 +1,7 @@
+EN INICIO.COMPONENT.TS : 
+import { frmAF_Pruebas } from '../proGrx_Beneficios/frmAF_Pruebas/frmAF_Pruebas.component';
+
+this.componentRegistry.registerComponent('frmAF_Pruebas', frmAF_Pruebas);
+
+EN INICIO MODULE
+import { frmAF_Pruebas } from '../proGrx_Beneficios/frmAF_Pruebas/frmAF_Pruebas.component';

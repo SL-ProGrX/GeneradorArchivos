@@ -1,0 +1,7 @@
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.exe.config
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.exe
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\bin\Debug\CreadorArchivos.pdb
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.csproj.AssemblyReference.cache
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.csproj.CoreCompileInputs.cache
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.exe
+C:\Users\DavidGM\source\repos\CreadorArchivos\CreadorArchivos\obj\Debug\CreadorArchivos.pdb
